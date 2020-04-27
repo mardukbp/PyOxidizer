@@ -249,7 +249,7 @@ impl<'instance, 'python, 'resources> MainPythonInterpreter<'instance, 'python, '
     /// of interpreter initialization.
     ///
     /// Returns a Python instance which has the GIL acquired.
-    fn init(&mut self) -> Result<Python, NewInterpreterError> {
+    fn init(&'instance mut self) -> Result<Python, NewInterpreterError> {
         match &self.interpreter_state {
             InterpreterState::Initializing => {
                 return Err(NewInterpreterError::Simple(
@@ -544,7 +544,7 @@ impl<'instance, 'python, 'resources> MainPythonInterpreter<'instance, 'python, '
     }
 
     /// Ensure the Python GIL is released.
-    pub fn release_gil(&mut self) {
+    pub fn release_gil(&'instance mut self) {
         if self.py.is_some() {
             self.py = None;
             self.gil = None;
@@ -552,7 +552,7 @@ impl<'instance, 'python, 'resources> MainPythonInterpreter<'instance, 'python, '
     }
 
     /// Ensure the Python GIL is acquired, returning a handle on the interpreter.
-    pub fn acquire_gil(&mut self) -> Result<Python<'python>, &'static str> {
+    pub fn acquire_gil(&'instance mut self) -> Result<Python<'python>, &'static str> {
         match self.interpreter_state {
             InterpreterState::NotStarted => {
                 return Err("interpreter not initialized");
@@ -603,7 +603,7 @@ impl<'instance, 'python, 'resources> MainPythonInterpreter<'instance, 'python, '
     /// to inspect the return value or handle an uncaught exception. If you want
     /// to keep the interpreter alive or inspect the evaluation result, consider
     /// calling a function in the `python_eval` module.
-    pub fn run_as_main(&mut self) -> i32 {
+    pub fn run_as_main(&'instance mut self) -> i32 {
         if self.config.uses_py_runmain() {
             let res = unsafe { pyffi::Py_RunMain() };
 
@@ -667,7 +667,7 @@ fn write_modules_to_directory(py: Python, path: &PathBuf) -> Result<(), &'static
 impl<'instance, 'python, 'resources> Drop
     for MainPythonInterpreter<'instance, 'python, 'resources>
 {
-    fn drop(&mut self) {
+    fn drop(&'instance mut self) {
         if let Some(key) = &self.config.write_modules_directory_env {
             if let Ok(path) = env::var(key) {
                 let path = PathBuf::from(path);
