@@ -761,3 +761,13 @@ impl<'a> PythonResourcesState<'a, u8> {
         Ok(())
     }
 }
+
+impl<'a, X> Drop for PythonResourcesState<'a, X>
+where
+    [X]: ToOwned<Owned = Vec<X>>,
+{
+    fn drop(&mut self) {
+        // This never gets called?!
+        println!("dropping python resources state");
+    }
+}
