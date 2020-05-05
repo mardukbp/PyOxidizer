@@ -2,6 +2,10 @@ Install with
 
 `cargo install --git https://github.com/mardukbp/PyOxidizer.git --branch v0.8.0-pre-workaround pyoxidizer`
 
+Build with
+
+`cargo build -p pyoxidizer -p python-packed-resources`
+
 # PyOxidizer
 
 [![Build Status](https://dev.azure.com/gregoryszorc/PyOxidizer/_apis/build/status/indygreg.PyOxidizer?branchName=main)](https://dev.azure.com/gregoryszorc/PyOxidizer/_build/latest?definitionId=1&branchName=main)
