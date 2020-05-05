@@ -266,7 +266,7 @@ pub fn update_new_cargo_toml(path: &Path, pyembed_location: &PyembedLocation) ->
 
     content.push_str(&match pyembed_location {
         PyembedLocation::Version(version) => format!(
-            "pyembed = {{ version = \"{}\", default-features=false }}\n",
+            "pyembed = {{ version = \"{}\", default-features=false, git = 'https://github.com/mardukbp/PyOxidizer', branch = 'v0.8.0-pre-workaround' }}\n",
             version
         ),
         PyembedLocation::Path(path) => format!(
